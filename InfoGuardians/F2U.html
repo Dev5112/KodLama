@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Truth Navigator: Media Literacy Ecosystem</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/react@17.0.2/umd/react.development.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/react-dom@17.0.2/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #3498db;
+            --accent-color: #2ecc71;
+            --background-light: #ecf0f1;
+            --text-dark: #2c3e50;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            background-color: var(--background-light);
+            color: var(--text-dark);
+            line-height: 1.6;
+        }
+
+        /* Animation Keyframes */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes slideIn {
+            from { transform: translateX(-100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        /* Existing Styles */
+        .hero-section {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 120px 0;
+            position: relative;
+            overflow: hidden;
+            animation: fadeIn 1s ease-out;
+        }
+
+        .feature-section {
+            padding: 80px 0;
+            background-color: white;
+        }
+
+        .feature-icon {
+            font-size: 3.5rem;
+            color: var(--secondary-color);
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .solution-card {
+            transition: all 0.3s ease;
+            border: none;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+            animation: fadeIn 1s ease-out;
+        }
+
+        .solution-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+        }
+
+        .solution-card:hover .feature-icon {
+            animation: pulse 1s infinite;
+        }
+
+        .cta-section {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 60px 0;
+            text-align: center;
+        }
+
+        .detail-section {
+            background-color: #f8f9fa;
+            padding: 60px 0;
+        }
+
+        /* New Interactive Styles */
+        .interactive-hover {
+            transition: all 0.3s ease;
+        }
+
+        .interactive-hover:hover {
+            transform: scale(1.05);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+        }
+
+        .animated-button {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .animated-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(120deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: all 0.5s;
+        }
+
+        .animated-button:hover::before {
+            left: 100%;
+        }
+
+        /* Solution Card Colors */
+        .solution-card-1 { border-top: 5px solid #3498db; }
+        .solution-card-2 { border-top: 5px solid #2ecc71; }
+        .solution-card-3 { border-top: 5px solid #e74c3c; }
+
+        /* Additional Interaction Styles */
+        .hover-lift {
+            transition: transform 0.3s ease;
+        }
+
+        .hover-lift:hover {
+            transform: translateY(-10px);
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        function App() {
+            const [activeSection, setActiveSection] = React.useState('home');
+            const [animateCards, setAnimateCards] = React.useState(false);
+
+            // Trigger card animation on scroll
+            React.useEffect(() => {
+                const handleScroll = () => {
+                    const scrollPosition = window.scrollY;
+                    if (scrollPosition > 300) {
+                        setAnimateCards(true);
+                    }
+                };
+
+                window.addEventListener('scroll', handleScroll);
+                return () => window.removeEventListener('scroll', handleScroll);
+            }, []);
+
+            const solutions = [
+                {
+                    title: 'Real-Time Indicators',
+                    description: 'Dynamic visual cues that provide instant context and reliability scoring for media content.',
+                    icon: 'bi-speedometer2',
+                    features: [
+                        'Instant source tracking',
+                        'Credibility visualization',
+                        'Context-aware indicators'
+                    ],
+                    colorClass: 'solution-card-1'
+                },
+                {
+                    title: 'Crowd-Sourced Checks',
+                    description: 'Collaborative platform enabling community-driven verification and fact-checking.',
+                    icon: 'bi-people-fill',
+                    features: [
+                        'Community validation',
+                        'Collaborative evidence gathering',
+                        'Transparent rating system'
+                    ],
+                    colorClass: 'solution-card-2'
+                },
+                {
+                    title: 'Media Literacy Aids',
+                    description: 'Educational tools and resources to enhance critical thinking and information evaluation skills.',
+                    icon: 'bi-book-half',
+                    features: [
+                        'Interactive learning modules',
+                        'Bias detection guides',
+                        'Source evaluation workshops'
+                    ],
+                    colorClass: 'solution-card-3'
+                }
+            ];
+
+            return (
+                <div>
+                    {/* Navigation */}
+                    <nav className="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+                        <div className="container">
+                            <a className="navbar-brand" href="#">Truth Navigator</a>
+                            <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                                <span className="navbar-toggler-icon"></span>
+                            </button>
+                            <div className="collapse navbar-collapse" id="navbarNav">
+                                <ul className="navbar-nav ms-auto">
+                                    <li className="nav-item">
+                                        <a className="nav-link hover-lift" href="#home">Home</a>
+                                    </li>
+                                    <li className="nav-item">
+                                        <a className="nav-link hover-lift" href="#solutions">Solutions</a>
+                                    </li>
+                                    <li className="nav-item">
+                                        <a className="nav-link hover-lift" href="#about">About</a>
+                                    </li>
+                                    <li className="nav-item">
+                                        <a className="nav-link hover-lift" href="#contact">Contact</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </nav>
+
+                    {/* Hero Section */}
+                    <div className="hero-section text-center">
+                        <div className="container">
+                            <h1 className="display-4 mb-4 text-white">Navigating Media Truth Together</h1>
+                            <p className="lead mb-5 text-white-50">Empowering Communities to Verify and Understand Information</p>
+                            <div>
+                                <button className="btn btn-success btn-lg me-3 animated-button">Get Started</button>
+                                <button className="btn btn-outline-light btn-lg animated-button">Learn More</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    {/* Misinformation Section */}
+                    <div className="container mt-5">
+                        <div className="p-5 mb-4 bg-danger text-white rounded jumbotron hover-lift">
+                            <h2 className="display-6 fw-bold">The Spread of Misinformation</h2>
+                            <p className="lead">Misinformation and disinformation can have serious consequences on society, influencing public opinion, elections, and even health decisions.</p>
+                            <hr className="my-4" />
+                            <p>Understanding how misinformation spreads is crucial in tackling its effects. Here are some key ways it proliferates:</p>
+                            <ul className="list-unstyled">
+                                <li className="mb-2"><i className="bi bi-exclamation-circle-fill text-warning me-2"></i>Social media amplification</li>
+                                <li className="mb-2"><i className="bi bi-exclamation-circle-fill text-warning me-2"></i>Algorithm-driven echo chambers</li>
+                                <li className="mb-2"><i className="bi bi-exclamation-circle-fill text-warning me-2"></i>Clickbait and sensationalized headlines</li>
+                            </ul>
+                            <button className="btn btn-light btn-lg mt-3 animated-button">Learn More</button>
+                        </div>
+
+                        <div className="p-4 border border-primary rounded bg-light shadow-sm hover-lift">
+                            <h4 className="text-primary"><i className="bi bi-lightbulb-fill me-2"></i>Did You Know?</h4>
+                            <p>Studies show that <strong>false news spreads six times faster</strong> than true news. Social media platforms often prioritize engagement over accuracy.</p>
+                        </div>
+                    </div>
+
+                    {/* Solutions Section */}
+                    <div className="feature-section" id="solutions">
+                        <div className="container">
+                            <h2 className="text-center mb-5">Our Innovative Solutions</h2>
+                            <div className="row">
+                                {solutions.map((solution, index) => (
+                                    <div 
+                                        key={index} 
+                                        className={`col-md-4 ${animateCards ? 'animate__animated animate__fadeInUp' : ''}`}
+                                        style={{animationDelay: `${index * 0.2}s`}}
+                                    >
+                                        <div className={`card solution-card p-4 text-center interactive-hover ${solution.colorClass}`}>
+                                            <i className={`bi ${solution.icon} feature-icon`}></i>
+                                            <h3 className="h4 mb-3">{solution.title}</h3>
+                                            <p className="mb-4">{solution.description}</p>
+                                            <div className="d-grid">
+                                                <button 
+                                                    className="btn btn-outline-primary animated-button" 
+                                                    data-bs-toggle="modal" 
+                                                    data-bs-target={`#modal-${index}`}
+                                                >
+                                                    Explore {solution.title}
+                                                </button>
+                                            </div>
+
+                                            {/* Modal for each solution */}
+                                            <div className="modal fade" id={`modal-${index}`} tabIndex="-1">
+                                                <div className="modal-dialog modal-lg">
+                                                    <div className="modal-content">
+                                                        <div className="modal-header">
+                                                            <h5 className="modal-title">{solution.title}</h5>
+                                                            <button type="button" className="btn-close" data-bs-dismiss="modal"></button>
+                                                        </div>
+                                                        <div className="modal-body">
+                                                            <ul className="list-group">
+                                                                {solution.features.map((feature, featureIndex) => (
+                                                                    <li key={featureIndex} className="list-group-item">{feature}</li>
+                                                                ))}
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Call to Action Section */}
+                    <div className="cta-section">
+                        <div className="container">
+                            <h2 className="mb-4">Join the Media Literacy Movement</h2>
+                            <p className="lead mb-4">Become a critical thinker and help create a more informed society</p>
+                            <button className="btn btn-success btn-lg animated-button">Sign Up Now</button>
+                        </div>
+                    </div>
+
+                    {/* Detailed Information Section */}
+                    <div className="detail-section" id="about">
+                        <div className="container">
+                            <div className="row">
+                                <div className="col-md-6">
+                                    <h2 className="mb-4">Why Media Literacy Matters</h2>
+                                    <p>In an era of information overload, distinguishing fact from fiction has never been more critical. Our platform empowers individuals to:</p>
+                                    <ul className="list-unstyled">
+                                        <li className="mb-2"><i className="bi bi-check-circle text-success me-2"></i>Develop critical thinking skills</li>
+                                        <li className="mb-2"><i className="bi bi-check-circle text-success me-2"></i>Identify potential misinformation</li>
+                                        <li className="mb-2"><i className="bi bi-check-circle text-success me-2"></i>Understand media bias</li>
+                                    </ul>
+                                </div>
+                                <div className="col-md-6">
+                                    <img src="/api/placeholder/600/400" alt="Media Literacy" className="img-fluid rounded shadow hover-lift" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Footer */}
+                    <footer className="bg-dark text-white text-center py-4">
+                        <div className="container">
+                            <p className="mb-0">&copy; 2024 Truth Navigator | Media Literacy Platform</p>
+                            <div className="mt-3">
+                                <a href="#" className="text-white me-3 hover-lift"><i className="bi bi-twitter"></i></a>
+                                <a href="#" className="text-white me-3 hover-lift"><i className="bi bi-facebook"></i></a>
+                                <a href="#" className="text-white hover-lift"><i className="bi bi-linkedin"></i></a>
+                            </div>
+                        </div>
+                    </footer>
+                </div>
+            );
+        }
+
+        ReactDOM.render(<App />, document.getElementById('root'));
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
